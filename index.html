@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f2e9">
+  <meta name="description" content="Un parcours simple et concret pour apprendre les bases de la cybersécurité.">
+  <title>Vigie — Apprendre la cybersécurité</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f2f2e9;
+      --surface: #fffefa;
+      --ink: #19231e;
+      --muted: #6d746f;
+      --line: #dedfd6;
+      --green: #c3d66b;
+      --green-dark: #315448;
+      --orange: #dd6546;
+      --type: "Cascadia Code", "Cascadia Mono", Consolas, "Lucida Console", monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--type); }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+    .topbar { height: 70px; padding: 0 5.2vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 18px; }
+    .brand-mark { width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--green); font-size: 13px; }
+    .top-links { display: flex; gap: 32px; font-size: 12px; }
+    .top-links a { color: var(--muted); }
+    .top-links a:hover, .top-links a[aria-current="page"] { color: var(--ink); }
+    .profile { display: flex; align-items: center; gap: 10px; font-size: 12px; }
+    .avatar { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #e6d8c8; }
+    main { width: min(1180px, 89.6vw); margin: 0 auto; padding: 39px 0 68px; }
+    .welcome { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
+    .eyebrow, .micro { font-size: 10px; text-transform: uppercase; }
+    .eyebrow { color: var(--green-dark); margin: 0 0 12px; }
+    h1 { margin: 0; font-size: clamp(29px, 4vw, 45px); line-height: 1.12; font-weight: 600; }
+    .welcome-note { margin: 12px 0 0; color: var(--muted); font-size: 13px; }
+    .streak { display: flex; align-items: center; gap: 10px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 4px; white-space: nowrap; font-size: 11px; }
+    .streak-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+    .feature { display: grid; grid-template-columns: 1.08fr .92fr; min-height: 250px; background: var(--green-dark); color: #fffefa; overflow: hidden; }
+    .feature-copy { padding: 28px 32px; display: flex; flex-direction: column; align-items: flex-start; }
+    .feature .micro { color: #d0dea0; margin: 0 0 16px; }
+    .feature h2 { max-width: 410px; margin: 0; font-size: clamp(21px, 2.8vw, 31px); font-weight: 500; line-height: 1.25; }
+    .feature-copy > p:not(.micro) { max-width: 400px; color: #d6e0d8; font-size: 12px; line-height: 1.8; margin: 11px 0 18px; }
+    .primary-button { display: inline-flex; align-items: center; gap: 16px; border: 0; border-radius: 3px; padding: 11px 14px; background: var(--green); color: var(--ink); cursor: pointer; font-size: 11px; font-weight: 700; }
+    .primary-button:hover { background: #d4e78a; }
+    .feature-photo { position: relative; min-height: 250px; overflow: hidden; }
+    .feature-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, var(--green-dark), transparent 40%), linear-gradient(0deg, #19231e66, transparent 65%); }
+    .feature-photo img { width: 100%; height: 100%; position: absolute; inset: 0; object-fit: cover; }
+    .photo-caption { position: absolute; z-index: 1; right: 18px; bottom: 15px; color: white; font-size: 9px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 22px 0 42px; border-bottom: 1px solid var(--line); }
+    .stat { display: flex; align-items: center; gap: 13px; padding: 14px 0 17px; }
+    .stat + .stat { border-left: 1px solid var(--line); padding-left: 24px; }
+    .stat-number { font-size: 19px; line-height: 1.2; font-weight: 600; }
+    .stat-label { color: var(--muted); font-size: 10px; }
+    .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 16px; }
+    .section-heading h2 { margin: 0; font-size: 20px; font-weight: 600; }
+    .section-heading p { margin: 7px 0 0; color: var(--muted); font-size: 11px; }
+    .filters { display: flex; gap: 7px; flex-wrap: wrap; }
+    .filter { padding: 8px 11px; border: 1px solid var(--line); border-radius: 3px; background: transparent; cursor: pointer; font-size: 10px; }
+    .filter:hover { border-color: var(--ink); }
+    .filter[aria-pressed="true"] { background: var(--ink); color: white; border-color: var(--ink); }
+    .search-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 18px 0 10px; }
+    .search { width: min(300px, 100%); padding: 9px 11px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); font-size: 11px; }
+    .results-count { color: var(--muted); font-size: 9px; }
+    .lesson-list { border-top: 1px solid var(--line); }
+    .lesson { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto auto; align-items: center; gap: 15px; min-height: 85px; padding: 13px 10px 13px 3px; border-bottom: 1px solid var(--line); }
+    .lesson:hover { background: #ffffff72; }
+    .lesson-index { width: 33px; height: 33px; display: grid; place-items: center; background: #e8e9df; border-radius: 50%; color: var(--green-dark); font-size: 10px; }
+    .lesson-copy { min-width: 0; }
+    .lesson-title { margin: 0 0 5px; font-size: 12px; font-weight: 600; }
+    .lesson-description { margin: 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .lesson-tag { padding: 5px 7px; background: #e8e9df; color: #56635b; font-size: 9px; white-space: nowrap; }
+    .lesson-action { min-width: 100px; display: flex; align-items: center; justify-content: flex-end; gap: 8px; border: 0; background: transparent; cursor: pointer; font-size: 10px; }
+    .lesson-action:hover { color: var(--orange); }
+    .lesson-action .arrow { font-size: 16px; }
+    .lesson.completed .lesson-index { background: var(--green); color: var(--ink); }
+    .empty-state { padding: 25px 4px; color: var(--muted); font-size: 11px; }
+    .footnote { margin-top: 32px; padding-top: 15px; border-top: 1px solid var(--line); color: var(--muted); font-size: 9px; line-height: 1.8; }
+    dialog { width: min(560px, calc(100% - 30px)); max-height: min(760px, calc(100% - 30px)); padding: 0; border: 0; border-radius: 5px; background: var(--surface); color: var(--ink); box-shadow: 0 20px 80px #10171145; }
+    dialog::backdrop { background: #15221caa; backdrop-filter: blur(3px); }
+    .dialog-inner { padding: 27px 30px 25px; }
+    .dialog-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; }
+    .dialog-top .micro { color: var(--green-dark); margin: 0 0 10px; }
+    .dialog-top h2 { margin: 0; font-size: 20px; line-height: 1.4; }
+    .close-button { width: 32px; height: 32px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; font-size: 18px; }
+    .lesson-body { color: #454e48; font-size: 11px; line-height: 1.9; white-space: pre-line; margin-top: 20px; }
+    .lesson-body strong { color: var(--ink); }
+    .quiz { margin-top: 21px; padding-top: 17px; border-top: 1px solid var(--line); }
+    .quiz h3 { margin: 0 0 11px; font-size: 12px; line-height: 1.7; }
+    .quiz-options { display: grid; gap: 7px; }
+    .quiz-option { padding: 10px 12px; border: 1px solid var(--line); border-radius: 3px; background: transparent; text-align: left; cursor: pointer; font-size: 10px; line-height: 1.6; }
+    .quiz-option:hover:not(:disabled) { border-color: var(--green-dark); }
+    .quiz-option:disabled { cursor: default; }
+    .quiz-option.correct { border-color: #71934b; background: #eff4df; }
+    .quiz-option.incorrect { border-color: var(--orange); background: #faeee9; }
+    .quiz-feedback { min-height: 20px; margin: 10px 0 0; color: var(--muted); font-size: 10px; line-height: 1.6; }
+    .quiz-feedback.success { color: #315448; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+    @media (max-width: 700px) {
+      .topbar { height: 62px; padding: 0 5vw; }
+      .top-links { gap: 14px; }
+      .top-links a:last-child, .profile-name { display: none; }
+      main { width: 90vw; padding-top: 28px; }
+      .welcome { align-items: flex-start; flex-direction: column; gap: 15px; }
+      .streak { padding: 8px 10px; }
+      .feature { grid-template-columns: 1fr; }
+      .feature-copy { padding: 23px; }
+      .feature-photo { min-height: 145px; grid-row: 1; }
+      .feature-photo::after { background: linear-gradient(0deg, var(--green-dark), transparent 75%); }
+      .stats { margin-bottom: 32px; }
+      .stat { align-items: flex-start; flex-direction: column; gap: 6px; }
+      .stat + .stat { padding-left: 12px; }
+      .stat-number { font-size: 15px; }
+      .stat-label { font-size: 8px; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .filters { width: 100%; }
+      .filter { flex: 1; padding: 8px 5px; }
+      .lesson { grid-template-columns: 35px minmax(0, 1fr) auto; gap: 9px; padding-right: 2px; }
+      .lesson-index { width: 30px; height: 30px; }
+      .lesson-tag { display: none; }
+      .lesson-action { min-width: 25px; font-size: 0; }
+      .lesson-action .arrow { font-size: 18px; }
+      .lesson-title { font-size: 11px; }
+      .lesson-description { font-size: 9px; }
+      .dialog-inner { padding: 22px 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#accueil" aria-label="Vigie, accueil"><span class="brand-mark" aria-hidden="true">V</span><span>vigie</span></a>
+    <nav class="top-links" aria-label="Navigation principale"><a href="#parcours" aria-current="page">Mon parcours</a><a href="#lecons">Les leçons</a></nav>
+    <div class="profile"><span class="avatar" aria-hidden="true">C</span><span class="profile-name">Camille</span></div>
+  </header>
+  <main id="accueil">
+    <section class="welcome" aria-labelledby="welcome-title">
+      <div><p class="eyebrow">TON ESPACE D’APPRENTISSAGE / NIVEAU 01</p><h1 id="welcome-title">Bonjour, Camille.</h1><p class="welcome-note">La cybersécurité, un bon réflexe à la fois.</p></div>
+      <div class="streak"><span class="streak-dot" aria-hidden="true"></span><span><strong id="progress-summary">0 leçon terminée</strong> · à ton rythme</span></div>
+    </section>
+    <section class="feature" id="parcours" aria-labelledby="feature-title">
+      <div class="feature-copy"><p class="micro">LE PARCOURS ESSENTIEL · 4 LEÇONS</p><h2 id="feature-title">Mieux repérer les pièges du quotidien.</h2><p>Des conseils concrets pour protéger tes comptes, tes appareils et tes informations personnelles.</p><button class="primary-button" id="start-button" type="button">Commencer le parcours <span aria-hidden="true">→</span></button></div>
+      <div class="feature-photo"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1100&q=85" alt="Composants électroniques sur une carte de circuit imprimé" fetchpriority="high"><span class="photo-caption">COMPRENDRE · PRÉVENIR · AGIR</span></div>
+    </section>
+    <section class="stats" aria-label="Ta progression">
+      <div class="stat"><span class="stat-number" id="completed-count">0/4</span><span class="stat-label">leçons terminées</span></div>
+      <div class="stat"><span class="stat-number">~ 12 min</span><span class="stat-label">pour tout le parcours</span></div>
+      <div class="stat"><span class="stat-number">Débutant</span><span class="stat-label">aucun prérequis</span></div>
+    </section>
+    <section id="lecons" aria-labelledby="lessons-title">
+      <div class="section-heading"><div><h2 id="lessons-title">Le parcours essentiel</h2><p>Quatre gestes simples pour gagner en confiance.</p></div>
+        <div class="filters" role="group" aria-label="Filtrer les leçons">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">Tout</button><button class="filter" type="button" data-filter="comptes" aria-pressed="false">Comptes</button><button class="filter" type="button" data-filter="vigilance" aria-pressed="false">Vigilance</button><button class="filter" type="button" data-filter="appareils" aria-pressed="false">Appareils</button>
+        </div>
+      </div>
+      <div class="search-row"><label class="sr-only" for="lesson-search">Rechercher une leçon</label><input class="search" id="lesson-search" type="search" placeholder="Rechercher une leçon…" autocomplete="off"><span class="results-count" id="results-count" aria-live="polite">4 LEÇONS</span></div>
+      <div class="lesson-list" id="lesson-list"></div>
+    </section>
+    <p class="footnote">Ces contenus donnent des repères généraux de prévention. En cas d’incident, contacte le support informatique de ton organisation ou les services compétents de ton pays.</p>
+  </main>
+  <dialog id="lesson-dialog" aria-labelledby="dialog-title"><div class="dialog-inner">
+    <div class="dialog-top"><div><p class="micro" id="dialog-kicker"></p><h2 id="dialog-title"></h2></div><button class="close-button" id="close-dialog" type="button" aria-label="Fermer la leçon">×</button></div>
+    <div class="lesson-body" id="lesson-body"></div>
+    <section class="quiz" aria-labelledby="quiz-title"><h3 id="quiz-title"></h3><div class="quiz-options" id="quiz-options"></div><p class="quiz-feedback" id="quiz-feedback" aria-live="polite"></p></section>
+  </div></dialog>
+  <script>
+    const lessons = [
+      { id: "mots-de-passe", category: "comptes", tag: "COMPTES", title: "Des mots de passe qui tiennent la route", description: "Créer des accès solides sans devoir tout mémoriser.", body: "<strong>Un mot de passe long et unique</strong> est plus difficile à deviner. Réutiliser le même partout est risqué : si un service est compromis, tes autres comptes deviennent vulnérables.\n\nUn gestionnaire de mots de passe peut générer et retenir un mot de passe différent pour chaque service. Active aussi l’authentification à deux facteurs quand elle est proposée : elle ajoute une vérification en plus du mot de passe.", question: "Que faire si un service propose la double authentification ?", options: ["L’activer pour ajouter une vérification", "Utiliser le même mot de passe partout", "Désactiver les alertes de connexion"], answer: 0, feedback: "Exact. La double authentification ajoute une barrière si ton mot de passe est compromis." },
+      { id: "hameconnage", category: "vigilance", tag: "VIGILANCE", title: "Déjouer les messages suspects", description: "Repérer un lien trompeur avant de cliquer.", body: "Un message inattendu qui réclame une action urgente mérite une pause. Les fraudeurs peuvent imiter une banque, un collègue ou un service connu pour te pousser à cliquer ou à partager un code.\n\n<strong>Vérifie l’adresse réelle de l’expéditeur et du lien</strong>, sans l’ouvrir. En cas de doute, passe par le site ou le numéro officiel que tu connais déjà. Ne communique jamais un code de connexion reçu par SMS ou notification.", question: "Un message te presse de confirmer ton compte via un lien. Quel est le bon réflexe ?", options: ["Cliquer vite pour éviter le blocage", "Répondre avec le code reçu", "Vérifier via le site officiel, sans utiliser le lien"], answer: 2, feedback: "Bien vu. En passant par le site officiel, tu évites le lien potentiellement piégé." },
+      { id: "mises-a-jour", category: "appareils", tag: "APPAREILS", title: "Garder ses appareils à jour", description: "Pourquoi les mises à jour protègent aussi tes données.", body: "Les mises à jour corrigent parfois des failles de sécurité, en plus d’ajouter des fonctions. Reporter trop longtemps une mise à jour peut laisser une porte ouverte à des attaques déjà connues.\n\n<strong>Installe les mises à jour depuis les réglages de l’appareil ou la boutique officielle.</strong> Méfie-toi des fenêtres inattendues qui réclament le téléchargement d’un « correctif » depuis un site inconnu.", question: "Où récupérer une mise à jour de sécurité ?", options: ["Depuis les réglages ou la boutique officielle", "Depuis une publicité dans un message", "En désactivant l’antivirus"], answer: 0, feedback: "Exact. Les canaux officiels sont le bon endroit pour les mises à jour." },
+      { id: "donnees-personnelles", category: "vigilance", tag: "VIGILANCE", title: "Partager ses informations avec soin", description: "Réduire les données exposées sur ses comptes.", body: "Plus un service détient d’informations, plus il y a de données susceptibles d’être exposées en cas de problème. Avant de remplir un profil, demande-toi si chaque champ est vraiment nécessaire.\n\n<strong>Limite la visibilité de tes publications</strong> aux personnes concernées, et retire les accès des applications que tu n’utilises plus. Une photo ou un détail anodin peut aussi révéler des informations sur tes habitudes ou ta localisation.", question: "Une application demande des informations facultatives. Que faire ?", options: ["Tout remplir pour terminer plus vite", "Ne partager que ce qui est nécessaire", "Publier son profil en accès public"], answer: 1, feedback: "Oui. Moins tu partages de données inutiles, moins tu en exposes." }
+    ];
+
+    const storageKey = "vigie-completed-lessons";
+    let completed = new Set();
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      if (Array.isArray(saved)) completed = new Set(saved.filter(id => lessons.some(lesson => lesson.id === id)));
+    } catch { completed = new Set(); }
+
+    const list = document.querySelector("#lesson-list");
+    const search = document.querySelector("#lesson-search");
+    const dialog = document.querySelector("#lesson-dialog");
+    let activeFilter = "all";
+    let activeLesson = null;
+
+    function renderLessons() {
+      const query = search.value.trim().toLocaleLowerCase("fr");
+      const visible = lessons.filter(lesson => (activeFilter === "all" || lesson.category === activeFilter) && `${lesson.title} ${lesson.description} ${lesson.tag}`.toLocaleLowerCase("fr").includes(query));
+      document.querySelector("#results-count").textContent = `${visible.length} LEÇON${visible.length > 1 ? "S" : ""}`;
+      if (!visible.length) { list.innerHTML = '<p class="empty-state">Aucune leçon ne correspond à cette recherche.</p>'; return; }
+      list.innerHTML = visible.map(lesson => {
+        const done = completed.has(lesson.id);
+        return `<article class="lesson${done ? " completed" : ""}"><span class="lesson-index" aria-label="Leçon ${lessons.indexOf(lesson) + 1}${done ? ", terminée" : ""}">${done ? "✓" : String(lessons.indexOf(lesson) + 1).padStart(2, "0")}</span><div class="lesson-copy"><h3 class="lesson-title">${lesson.title}</h3><p class="lesson-description">${lesson.description}</p></div><span class="lesson-tag">${lesson.tag}</span><button class="lesson-action" type="button" data-lesson="${lesson.id}" aria-label="${done ? "Revoir" : "Commencer"} : ${lesson.title}">${done ? "Revoir" : "Commencer"}<span class="arrow" aria-hidden="true">→</span></button></article>`;
+      }).join("");
+    }
+
+    function updateProgress() {
+      const count = completed.size;
+      document.querySelector("#completed-count").textContent = `${count}/4`;
+      document.querySelector("#progress-summary").textContent = `${count} leçon${count > 1 ? "s" : ""} terminée${count > 1 ? "s" : ""}`;
+      try { localStorage.setItem(storageKey, JSON.stringify([...completed])); } catch { /* Progress remains available for this visit. */ }
+      renderLessons();
+    }
+
+    function openLesson(lesson) {
+      activeLesson = lesson;
+      document.querySelector("#dialog-kicker").textContent = `${lesson.tag} · LE PARCOURS ESSENTIEL`;
+      document.querySelector("#dialog-title").textContent = lesson.title;
+      document.querySelector("#lesson-body").innerHTML = lesson.body;
+      document.querySelector("#quiz-title").textContent = lesson.question;
+      document.querySelector("#quiz-feedback").textContent = "";
+      document.querySelector("#quiz-feedback").className = "quiz-feedback";
+      document.querySelector("#quiz-options").innerHTML = lesson.options.map((option, index) => `<button class="quiz-option" type="button" data-answer="${index}">${option}</button>`).join("");
+      dialog.showModal();
+    }
+
+    list.addEventListener("click", event => {
+      const button = event.target.closest("[data-lesson]");
+      if (button) { const lesson = lessons.find(item => item.id === button.dataset.lesson); if (lesson) openLesson(lesson); }
+    });
+    document.querySelector("#quiz-options").addEventListener("click", event => {
+      const button = event.target.closest("[data-answer]");
+      if (!button || !activeLesson) return;
+      const feedback = document.querySelector("#quiz-feedback");
+      if (Number(button.dataset.answer) === activeLesson.answer) {
+        completed.add(activeLesson.id);
+        button.classList.add("correct");
+        feedback.textContent = activeLesson.feedback;
+        feedback.classList.add("success");
+        document.querySelectorAll(".quiz-option").forEach(option => { option.disabled = true; });
+        updateProgress();
+      } else {
+        button.classList.add("incorrect");
+        button.disabled = true;
+        feedback.textContent = "Pas tout à fait. Relis la leçon et réessaie.";
+      }
+    });
+    document.querySelectorAll(".filter").forEach(button => button.addEventListener("click", () => {
+      activeFilter = button.dataset.filter;
+      document.querySelectorAll(".filter").forEach(filter => filter.setAttribute("aria-pressed", String(filter === button)));
+      renderLessons();
+    }));
+    search.addEventListener("input", renderLessons);
+    document.querySelector("#start-button").addEventListener("click", () => openLesson(lessons.find(lesson => !completed.has(lesson.id)) || lessons[0]));
+    document.querySelector("#close-dialog").addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", event => { if (event.target === dialog) dialog.close(); });
+    renderLessons();
+    updateProgress();
+  </script>
+</body>
+</html>
